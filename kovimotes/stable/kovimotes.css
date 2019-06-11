@@ -1,0 +1,45 @@
+.emote {max-height: 32px !important; height: 32px !important;}
+.emotewrapper div {display: inline-block; text-indent: 0px;}
+.emoji {height: 32px !important; width: auto !important;}
+.reaction.emoji {height: 24px; width: 24px;}
+.emote64 {max-height: 64px !important; height: 64px !important; width: auto !important;}
+.div64 {font-size: 200% !important;}
+.emoteflipflap {transform: scaleX(-1) scaleY(-1);}
+.emoteflip, .emotespinflip {transform: scaleX(-1)}
+.emoteflap {transform: scaleY(-1)}
+.emotespin {animation: 1.0s emote-spin infinite linear}
+.emote1spin {animation: 1.0s emote-spin-reverse infinite linear}
+.emotespin2 {animation: 0.5s emote-spin infinite linear}
+.emote2spin {animation: 0.5s emote-spin-reverse infinite linear}
+.emotespin3 {animation: 0.2s emote-spin infinite linear}
+.emote3spin {animation: 0.2s emote-spin-reverse infinite linear}
+.emotepulse {animation: 1.0s emote-pulse infinite linear}
+.emotetr {transform: translateX(-3px)}
+.emotebl {transform: translateY(-3px)}
+.emotebr {transform: translate(-3px,-3px)}
+.emoteshake {animation: 1.0s emote-shake infinite linear}
+.emoteshake2 {animation: 0.2s emote-shake2 linear infinite}
+.emoteshake3 {animation: 0.1s emote-shake3 linear infinite}
+.emoteshake4 {animation: 0.08s emote-shake4 linear infinite}
+@-webkit-keyframes "emote-spin" {from {transform: rotate(0deg);} to {transform: rotate(360deg);}}
+@-webkit-keyframes "emote-spin-reverse" {from {transform: rotate(0deg);} to {transform: rotate(-360deg);}}
+@-webkit-keyframes "emote-pulse" {0% {-webkit-transform: scale(1,1);} 50% {-webkit-transform: scale(1.2,1.2);} 100% {-webkit-transform: scale(1,1);}}
+@-webkit-keyframes "emote-shake" {10%, 90% {transform: translate3d(-1px,0,0);} 20%, 80% {transform: translate3d(2px,0,0);} 30%, 50%, 70% {transform: translate3d(-4px,0,0);} 40%, 60% {transform:translate3d(4px,0,0);}}
+@-webkit-keyframes "emote-shake2" {25% {transform: translate(-1px,-1px);} 50% {transform: translate(-1px,1px);} 75% {transform: translate(1px,1px);} 100% {transform: translate(1px,-1px);}}
+@-webkit-keyframes "emote-shake3" {25% {transform: translate(-1px,-1px);} 50% {transform: translate(-1px,1px);} 75% {transform: translate(1px,1px);} 100% {transform: translate(1px,-1px);}}
+@-webkit-keyframes "emote-shake4" {25% {transform: translate(-4px,2px);} 50% {transform: translate(4px,-2px);} 75% {transform: translate(-4px,-2px);} 100%{transform:translate(4px,2px);}}
+[class*="emojiPicker"] {box-shadow: none; border-top: none; border-radius: 0 0 5px 5px;}
+.theme-dark [class*="emojiPicker"] {background-color: #353535;}
+.theme-dark [class*="emojiPicker"] .category {background-color: #353535;}
+.theme-dark [class*="emojiPicker"] [class*="header"] {background-color: #2B2B2B;}
+.theme-dark [class*="emojiPicker"] [class*="header"] [class*="searchBar"] {background-color: #2B2B2B;}
+.theme-dark [class*="emojiPicker"] [class*="searchBar"] input {color: #FFF;}
+.theme-dark [class*="emojiPicker"] [class*="searchBar"] input::-webkit-input-placeholder {color: #FFF;}
+.theme-dark [class*="emojiPicker"] [class*="scroller"] [class*="stickyHeader"] {background-color: #353535;}
+.theme-dark [class*="emojiPicker"] [class*="scroller"] [class*="emojiItem"][class*="selected"] {background: rgba(123, 123, 123, 0.37); background-size: contain; background-repeat: no-repeat; background-position: 50%;}
+.theme-dark [class*="emojiPicker"] [class*="dimmer"][class*="visible"] {background-color: rgba(62, 62, 62, 0.65);}
+.theme-dark [class*="emojiPicker"] [class*="header"] [class*="diversitySelector"] [class*="popout"] {background: #353535; border-color: #202020; z-index: 2; width: 99%; height: 91%;}
+.theme-dark [class*="emojiPicker"] [class*="premiumPromo"] {background-color: #353535;}
+.theme-dark [class*="emojiPicker"] [class*="scroller"]::-webkit-scrollbar, .theme-dark [class*="emojiPicker"] [class*="scroller"]::-webkit-scrollbar-track, .theme-dark [class*="emojiPicker"] [class*="scroller"]::-webkit-scrollbar-track-piece {background-color: #303030 !important; border-color: #303030 !important;}
+.theme-dark #bda-qem-twitch-container [class*="scroller"]::-webkit-scrollbar-thumb, .theme-dark #bda-qem-favourite-container [class*="scroller"]::-webkit-scrollbar-thumb, .theme-dark [class*="emojiPicker"] [class*="scroller"]::-webkit-scrollbar-thumb, .theme-dark #pubs-container [class*="scroller"]::-webkit-scrollbar-thumb {border-color: #202020 !important; background-color: #202020 !important}
+[class*="username-"], [class*="usernameOnline-"] {font-weight: 600;}

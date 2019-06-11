@@ -1,0 +1,157 @@
+koviMotes = koviMotes;
+
+koviMotes.version = "2017.07.19.2220";
+
+koviMotes.startup = function(){
+	var oldStorage = ["KoviMotes","customEmoteLists","customEmoteToggles","customEmoteSettings"];
+	for(var a=0;a<oldStorage.length;a++){
+		if(typeof localStorage.getItem(oldStorage[a]) != "undefined"){
+			localStorage.removeItem(oldStorage[a]);
+		};
+	};
+
+	var wrappers = document.getElementsByClassName("messages-wrapper");
+	if(typeof wrappers != "undefined" && wrappers.length > 0){
+		for(var a=0;a<wrappers.length;a++){
+			var wrapper = wrappers[a];
+			var messages = koviMotes.findMessages(wrapper);
+			if(typeof messages != "undefined" && messages.length > 0){
+				for(var b=0;b<messages.length;b++){
+					var message = messages[b];
+					setTimeout(koviMotes.processMessage,100,message);
+				};
+			};
+		};
+	};
+
+	var classes = document.createElement("style");
+	classes.id = "koviMotesCSS";
+	classes.innerHTML = ".emote64 {max-height: 64px !important;} .emoteflipflap {transform: scaleX(-1) scaleY(-1);} .emoteflip, .emotespinflip {transform: scaleX(-1)} .emotespin {animation: 1s emote-spin infinite linear} .emote1spin {animation: 1s emote-spin-reverse infinite linear} .emotespin2 {animation: 0.5s emote-spin infinite linear} .emote2spin {animation: 0.5s emote-spin-reverse infinite linear} .emotespin3 {animation: 0.2s emote-spin infinite linear} .emote3spin {animation: 0.2s emote-spin-reverse infinite linear} .emotepulse {animation: 1s emote-pulse infinite linear} .emotetr {transform: translateX(-3px)} .emotebl {transform: translateY(-3px)} .emotebr {transform: translate(-3px, -3px)} .emoteshake {animation: 1s emote-shake infinite linear} .emoteflap {transform: scaleY(-1) !important} .emoteshake2 {animation: emote-shake2 0.3s linear infinite} .emoteshake3 {animation: emote-shake3 0.1s linear infinite} .emoteshake4 {animation: emote-shake4 0.08s linear infinite} @-webkit-keyframes \"emote-shake2\" {25% {transform: translate(-1px, -1px);} 50% {transform: translate(-1px, 1px);} 75% {transform: translate(1px, 1px);} 75% {transform: translate(1px, -1px);}} @-webkit-keyframes \"emote-shake3\" {25% {transform: translate(-1px, -1px);} 50% {transform: translate(-1px, 1px);} 75% {transform: translate(1px, 1px);} 75% {transform: translate(1px, -1px);}} @-webkit-keyframes \"emote-spin\" {from {transform: rotate(0deg);} to {transform: rotate(360deg);}} @-webkit-keyframes \"emote-spin-reverse\" {from {transform: rotate(0deg);} to {transform: rotate(-360deg);}} @-webkit-keyframes \"emote-pulse\" {0% {-webkit-transform: scale(1, 1);} 50% {-webkit-transform: scale(1.2, 1.2);} 100% {-webkit-transform: scale(1, 1);}} @-webkit-keyframes \"emote-shake\" {10%, 90% {transform: translate3d(-1px, 0, 0);} 20%, 80% {transform: translate3d(2px, 0, 0);} 30%, 50%, 70% {transform: translate3d(-4px, 0, 0);} 40%, 60% {transform: translate3d(4px, 0, 0);}} @-webkit-keyframes \"emote-shake4\" {25% {transform: translate(-4px, 2px);} 50% {transform: translate(4px, -2px);} 75% {transform: translate(-4px, -2px);} 75% {transform: translate(4px, 2px);}}";
+	document.head.appendChild(classes);
+
+	koviMotes.observer.observe(document.body,{childList:true,subtree:true,characterData:true});
+
+	if(typeof koviMotes.version != "undefined" && typeof koviMotes.json.version != "undefined"){
+		console.log("koviMotes.js","v"+koviMotes.version,"is running and using koviMotes.json v"+koviMotes.json.version);
+	}
+	else {
+		console.log("koviMotes was unable to start.");
+		return;
+	};
+};
+
+koviMotes.observer = new MutationObserver(function(mutations){
+	for(var a=0;a<mutations.length;a++){
+		var mutation = mutations[a];
+		if(mutation.addedNodes.length > 0){
+			var nodes = mutation.addedNodes;
+			for(var b=0;b<nodes.length;b++){
+				var node = nodes[b];
+				var messages = koviMotes.findMessages(node);
+				if(typeof messages != "undefined" && messages.length > 0){
+					for(var c=0;c<messages.length;c++){
+						var message = messages[c];
+						setTimeout(koviMotes.processMessage,100,message);
+					};
+				};
+			};
+		};
+	};
+});
+
+koviMotes.findMessages = function(node){
+	var nodes = [];
+	var classes = node.classList;
+	var children = node.childNodes;
+	if(typeof children != "undefined" && children.length > 0){
+		for(var a=0;a<children.length;a++){
+			var child = children[a];
+			if(child.nodeType == 3){
+				if(typeof classes != "undefined" && (classes.contains("markup") || classes.contains("message-content"))){
+					nodes.push(child);
+				};
+			};
+			var grandchildren = koviMotes.findMessages(child);
+			if(typeof grandchildren != "undefined" && grandchildren.length > 0){
+				for(var b=0;b<grandchildren.length;b++){
+					var grandchild = grandchildren[b];
+					nodes.push(grandchild);
+				};
+			};
+		};
+	};
+	if(nodes.length > 0){
+		return nodes;
+	};
+};
+
+koviMotes.processMessage = function(node){
+	var parent = node.parentNode;
+	if(typeof parent != "undefined" && parent != null){
+		var html = parent.innerHTML;
+		if(typeof html != "undefined"){
+			var input = parent.innerHTML.replace(/<(.*?)>/g,"");
+			if(typeof input != "undefined"){
+				var parsed = input.split(/\s|\(edited\)/g);
+				var cleaned = input.split(/\s|\(edited\)/g);
+				var output = parent.innerHTML;
+
+				var root = koviMotes.json.root;
+				var emotes = koviMotes.json.emotes;
+
+				var changes = false;
+
+				if(typeof html != "undefined" && html.length > 0
+				&& typeof input != "undefined" && input.length > 0
+				&& typeof parsed != "undefined" && parsed.length > 0
+				&& typeof cleaned != "undefined" && cleaned.length > 0
+				&& typeof output != "undefined" && output.length > 0
+				&& typeof root != "undefined" && root.length > 0
+				&& typeof emotes != "undefined" && Object.keys(emotes).length > 0){
+					for(var a=0;a<cleaned.length;a++){
+						cleaned[a] = cleaned[a].split(/:/)[0];
+					};
+					for(var a=0;a<cleaned.length;a++){
+						for(var b in emotes){
+							if(emotes.hasOwnProperty(b)){
+								if(b == cleaned[a]){
+									var emoteSrc = root+b+"."+emotes[b];
+                  var modifiers = parsed[a].split(/:/).slice(1);
+                  var emoteClasses = 'emote';
+                  for(i = 0; i < modifiers.length; i++){
+                    emoteClasses = emoteClasses + ' emote' + modifiers[i];
+                  };
+									// var emoteClasses = parsed[a].split(/:/)[1]?"emote emote"+parsed[a].split(/:/)[1]:"emote";
+									var emoteHTML = '<span class="emotewrapper"><img draggable="false" style="max-height:32px;" class="'+emoteClasses+'" alt="'+b+'" src="'+emoteSrc+'"><input onclick=quickEmoteMenu.favorite("'+b+'","'+emoteSrc+'") class="fav" title="Favorite!" type="button"></span>';
+
+									output = output.replace(new RegExp(parsed[a]+/(?!\"|\.|\:)/.source,"g"),emoteHTML);
+									changes = true;
+								};
+							};
+						};
+						if(cleaned[a] == "koviMote"){
+							var emoteClasses = parsed[a].split(/:/)[1]?"emote"+parsed[a].split(/:/)[1]:"";
+							var emoteHTML = '<span class="emotewrapper"><div style="max-height:32px;" class="'+emoteClasses+'">'+"(*´・ｖ・)/`"+'</div></span>';
+
+							output = output.replace(new RegExp(parsed[a]+/(?=\s|<)/.source,"g"),emoteHTML);
+							changes = true;
+						}
+					};
+					if(changes){
+            var scroller = document.getElementsByClassName('scroller messages')[0];
+            var outer = parent;
+            while(!outer.classList.contains('message')){
+              outer = outer.parentNode;
+            };
+            var oldHeight = outer.scrollHeight;
+						parent.innerHTML = parent.innerHTML.replace(html,output);
+            setTimeout(function(){
+              var newHeight = outer.scrollHeight;
+              scroller.scrollTop = scroller.scrollTop + (newHeight - oldHeight) + 5;
+            }, 100, scroller, outer, oldHeight);
+					};
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,9 @@
+else if(cleaned[a] == "(*´・ｖ・)/`"){
+	parsed[a] = parsed[a].replace(/[\(\*\´\・\ｖ\・\)\/\`]/g,"\\$&");
+	var emoteClasses = parsed[a].split(/:/)[1]?"emote"+parsed[a].split(/:/)[1]:"";
+	var emoteHTML = '<span class="emotewrapper"><div style="max-height:32px;" class="'+emoteClasses+'">'+"(*´・ｖ・)/`"+'</div></span>';
+
+
+	output = output.replace(new RegExp(parsed[a]+/(?!\"|\.)/.source,"g"),emoteHTML);
+	changes = true;
+}

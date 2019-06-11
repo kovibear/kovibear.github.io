@@ -1,0 +1,105 @@
+// get blacklist
+    if(needsUpdated("blacklist")){
+      let blacklist = await new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://kovibear.tv/kovimotes/stable/blacklist.json", true);
+        xhr.onload = function(e){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            self.emoteLists["blacklist"] = JSON.parse(xhr.responseText);
+            localLists["blacklist"] = self.emoteLists["blacklist"];
+            resolve();
+          }
+        }
+        xhr.onerror = function(e){
+          resolve();
+        }
+        xhr.send();
+      });
+    }
+    else {
+      self.emoteLists["blacklist"] = localLists["blacklist"];
+    }
+    // get kovimotes
+    if(needsUpdated("kovimotes")){
+      let kovimotes = await new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://kovibear.tv/kovimotes/stable/kovimotes.json", true);
+        xhr.onload = function(e){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            self.emoteLists["kovimotes"] = JSON.parse(xhr.responseText);
+            localLists["kovimotes"] = self.emoteLists["kovimotes"];
+            resolve();
+          }
+        }
+        xhr.onerror = function(e){
+          resolve();
+        }
+        xhr.send();
+      });
+    }
+    else {
+      self.emoteLists["kovimotes"] = localLists["kovimotes"];
+    }
+    // get twitch
+    if(needsUpdated("twitch")){
+      let twitch = await new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://kovibear.tv/kovimotes/stable/twitch.json", true);
+        xhr.onload = function(e){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            self.emoteLists["twitch"] = JSON.parse(xhr.responseText);
+            localLists["twitch"] = self.emoteLists["twitch"];
+            resolve();
+          }
+        }
+        xhr.onerror = function(e){
+          resolve();
+        }
+        xhr.send();
+      });
+    }
+    else {
+      self.emoteLists["twitch"] = localLists["twitch"];
+    }
+    // get ffz
+    if(needsUpdated("ffz")){
+      let ffz = await new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://kovibear.tv/kovimotes/stable/ffz.json", true);
+        xhr.onload = function(e){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            self.emoteLists["ffz"] = JSON.parse(xhr.responseText);
+            localLists["ffz"] = self.emoteLists["ffz"];
+            resolve();
+          }
+        }
+        xhr.onerror = function(e){
+          resolve();
+        }
+        xhr.send();
+      });
+    }
+    else {
+      self.emoteLists["ffz"] = localLists["ffz"];
+    }
+    // get bttv
+    if(needsUpdated("bttv")){
+      let bttv = await new Promise(function(resolve, reject){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://kovibear.tv/kovimotes/stable/bttv.json", true);
+        xhr.onload = function(e){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            self.emoteLists["bttv"] = JSON.parse(xhr.responseText);
+            localLists["bttv"] = self.emoteLists["bttv"];
+            resolve();
+          }
+        }
+        xhr.onerror = function(e){
+          resolve();
+        }
+        xhr.send();
+      });
+    }
+    else {
+      self.emoteLists["bttv"] = localLists["bttv"];
+    }

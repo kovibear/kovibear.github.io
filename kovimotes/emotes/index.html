@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>koviEmotes List</title>
+    <meta charset="UTF-8">
+    <style type="text/css">
+      html,body{font-family:Arial;background:#999;}
+      table,th,td{background:#777; border:1px solid; text-align:center; padding: 5px;}
+      .emote{max-height:32px;}
+      .emote64{max-height:64px;}
+    </style>
+  </head>
+  <body>
+    <h1>koviMotes List</h1>
+    <table id="emoteList">
+      <tr>
+        <th>Emote Name</th>
+        <th>Emote Image</th>
+        <th>Emote Image (:64)</th>
+      </tr>
+    </table>
+    <script>
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4 && xhr.status == 200){
+          var json = JSON.parse(xhr.responseText);
+          if(typeof json.emotes != undefined && Object.keys(json.emotes).length > 0){
+            console.log(json.emotes);
+            listItems(json.emotes);
+          }
+        }
+      }
+      xhr.open("GET","https://kovibear.tv/kovimotes/stable/kovimotes.json",true);
+      xhr.send();
+
+      var listItems = function(list){
+        var table = document.getElementById("emoteList");
+        for(var a in list){
+          if(list.hasOwnProperty(a)){
+            var row = table.insertRow(-1);
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+
+            cell0.innerHTML = a;
+            cell1.innerHTML = '<img class="emote" src="'+a+'.'+list[a]+'">';
+            cell2.innerHTML = '<img class="emote64" src="'+a+'.'+list[a]+'">';
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
